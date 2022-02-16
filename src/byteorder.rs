@@ -26,6 +26,8 @@ impl Default for ByteOrder {
     }
 }
 
-pub fn newbyteorder() -> ByteOrder {
-    return Default::default();
+impl ByteOrder {
+    pub fn new() -> Self {
+        return ByteOrder::default();
+    }
 }

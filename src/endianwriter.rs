@@ -9,7 +9,7 @@ use endianreader::*;
 pub struct EndianWriter<'a, W> where W : Write + Seek {
     pub writer: &'a mut W,
     pub order: &'a ByteOrder,
-    pub encoder: &'a dyn Encoding
+    pub encoder: &'a dyn Encoding,
 }
 
 impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
@@ -24,7 +24,7 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
         let pointer: *const N = &*num;
         let raw = pointer as *const u8;
         let mut buf: Vec<u8> = slice::from_raw_parts(raw, size_of::<N>());
-        if self.order != systemendian() {
+        if *self.order != systemendian() {
             buf = buf.into_iter().rev().collect();
         }
         return self.writebytes(&buf);

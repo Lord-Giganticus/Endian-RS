@@ -6,7 +6,7 @@ use crate::*;
 use byteorder::*;
 
 pub fn systemendian() -> ByteOrder {
-    return ByteOrder::default();
+    return ByteOrder::new();
 }
 
 pub struct EndianReader<'a, R> where R: Read + Seek {
