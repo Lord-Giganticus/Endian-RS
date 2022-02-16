@@ -35,8 +35,8 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
             return *res;
         }
     }
-    pub fn readbytes<S: Into<usize>>(&mut self, len: S) -> Vec<u8> {
-        let mut vec: Vec<u8> = vec![0; len.into()];
+    pub fn readbytes(&mut self, len: usize) -> Vec<u8> {
+        let mut vec: Vec<u8> = vec![0; len];
         self.reader.read(&mut vec).unwrap();
         return vec;
     }
@@ -44,10 +44,10 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
         return self.reader.seek(pos);
     }
     pub fn readint8(&mut self) -> i8 {
-        return self.readbytes(1 as u8)[0] as i8;
+        return self.readbytes(1)[0] as i8;
     }
     pub fn readuint8(&mut self) -> u8 {
-        return self.readbytes(1 as u8)[0];
+        return self.readbytes(1)[0];
     }
     pub fn readint16(&mut self) -> i16 {
         return self.readnumeric::<i16>();
@@ -67,7 +67,7 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
     pub fn readuint64(&mut self) -> u64 {
         return self.readnumeric::<u64>();
     }
-    pub fn readstring<S : Into<usize>>(&mut self, len: S) -> String {
+    pub fn readstring(&mut self, len: usize) -> String {
         let buf = self.readbytes(len);
         return self.readstringfromvec(&buf);
     }
