@@ -63,4 +63,7 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
         let buf = self.encoder.encode(data, EncoderTrap::Ignore).unwrap();
         return self.writebytes(&buf);
     }
+    pub fn changeorder(&mut self, order: &'a ByteOrder) {
+        self.order = order;
+    }
 }

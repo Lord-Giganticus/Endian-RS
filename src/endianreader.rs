@@ -86,4 +86,7 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
     pub fn position(&mut self) -> u64 {
         return self.seek(SeekFrom::Current(0)).unwrap();
     }
+    pub fn changeorder(&mut self, order: &'a ByteOrder) {
+        self.order = order;
+    }
 }
