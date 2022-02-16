@@ -60,7 +60,7 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
         return self.writenumeric(num);
     }
     pub fn writestring(&mut self, data: String) -> usize {
-        let buf = self.encoder.encode(data, EncoderTrap::Ignore);
+        let buf = self.encoder.encode(data, EncoderTrap::Ignore).unwrap();
         return self.writebytes(&buf);
     }
 }
