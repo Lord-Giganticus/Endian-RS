@@ -59,6 +59,12 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
     pub fn writeuint64(&mut self, num: u64) -> usize {
         return self.writenumeric(num);
     }
+    pub fn writesingle(&mut self, num: f32) -> usize {
+        return self.writenumeric(num);
+    }
+    pub fn writedouble(&mut self, num: f64) -> usize {
+        return self.writenumeric(num);
+    }
     pub fn writestring(&mut self, data: String) -> usize {
         let buf = self.encoder.encode(data, EncoderTrap::Ignore).unwrap();
         return self.writebytes(&buf);

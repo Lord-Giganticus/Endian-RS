@@ -67,6 +67,12 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
     pub fn readuint64(&mut self) -> u64 {
         return self.readnumeric::<u64>();
     }
+    pub fn readshort(&mut self) -> f32 {
+        return self.readnumeric::<f32>();
+    }
+    pub fn readdouble(&mut self) -> f64 {
+        return self.readnumeric::<f64>();
+    }
     pub fn readstring(&mut self, len: usize) -> String {
         let buf = self.readbytes(len);
         return self.readstringfromvec(&buf);
