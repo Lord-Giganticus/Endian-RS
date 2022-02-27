@@ -23,17 +23,13 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
             encoder: encoding
         };
     }
-    fn readnumeric<N : Copy>(&mut self) -> N {
+    fn readnumeric<N : Copy + macros::Data>(&mut self) -> N {
         let size = size_of::<N>();
         let mut vec = self.readbytes(size);
-        if *self.order != systemendian() {
-            vec = vec.into_iter().rev().collect();
+        if self.reverse() {
+            reverse!(vec);
         }
-        let ptr = vec.as_ptr();
-        let res = ptr as *const N;
-        unsafe {
-            return *res;
-        }
+        N::from_bytes(vec)
     }
     pub fn readbytes(&mut self, len: usize) -> Vec<u8> {
         let mut vec: Vec<u8> = vec![0; len];
@@ -94,5 +90,8 @@ impl<'a, R> EndianReader<'a, R> where R : Read + Seek {
     }
     pub fn changeorder(&mut self, order: &'a ByteOrder) {
         self.order = order;
+    }
+    pub fn reverse(&self) -> bool {
+        *self.order != systemendian()
     }
 }

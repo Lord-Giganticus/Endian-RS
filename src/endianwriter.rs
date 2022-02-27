@@ -20,12 +20,10 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
             encoder: encoding
         }
     }
-    fn writenumeric<N : Copy>(&mut self, num: N) -> usize {
-        let pointer: *const N = &*num;
-        let raw = pointer as *const u8;
-        let mut buf: Vec<u8> = slice::from_raw_parts(raw, size_of::<N>());
-        if *self.order != systemendian() {
-            buf = buf.into_iter().rev().collect();
+    fn writenumeric<N : Copy + macros::Data>(&mut self, num: N) -> usize {
+        let mut buf = num.as_bytes();
+        if self.reverse() {
+            reverse!(buf);
         }
         return self.writebytes(&buf);
     }
@@ -71,5 +69,8 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
     }
     pub fn changeorder(&mut self, order: &'a ByteOrder) {
         self.order = order;
+    }
+    pub fn reverse(&self) -> bool {
+        *self.order = systemendian()
     }
 }
