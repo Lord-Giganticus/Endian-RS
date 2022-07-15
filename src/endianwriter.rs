@@ -1,5 +1,4 @@
 use std::io::*;
-use std::mem::*;
 use std::*;
 
 use crate::*;
@@ -64,13 +63,13 @@ impl<'a, W> EndianWriter<'a, W> where W : Write + Seek {
         return self.writenumeric(num);
     }
     pub fn writestring(&mut self, data: String) -> usize {
-        let buf = self.encoder.encode(data, EncoderTrap::Ignore).unwrap();
+        let buf = self.encoder.encode(&data, EncoderTrap::Ignore).unwrap();
         return self.writebytes(&buf);
     }
     pub fn changeorder(&mut self, order: &'a ByteOrder) {
         self.order = order;
     }
     pub fn reverse(&self) -> bool {
-        *self.order = systemendian()
+        *self.order == systemendian()
     }
 }

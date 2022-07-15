@@ -52,6 +52,8 @@ macro_rules! impl_bytes {
     };
 }
 
+impl_bytes!(i8);
+impl_bytes!(u8);
 impl_bytes!(i16);
 impl_bytes!(u16);
 impl_bytes!(i32);
