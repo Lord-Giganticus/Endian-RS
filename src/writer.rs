@@ -1,4 +1,4 @@
-use crate::{endian::*, bytes::*};
+use crate::{endian::*, bytes::*, encoding::{Encoding, EncoderTrap::Ignore}};
 
 use std::io::{Write, Seek};
 
@@ -37,4 +37,14 @@ impl<W: SeekWrite> Writer<W> {
         }
         self.write(&buf)
     }
+    pub fn write_string<E: Encoding>(&mut self, msg: &str, enc: &E) -> std::io::Result<usize> {
+        let buf = enc.encode(msg.into(), Ignore).unwrap_or_default();
+        self.write(&buf)
+    }
+    pub fn write_zero_terminated_string<E: Encoding>(&mut self, msg: &str, enc: &E) -> std::io::Result<usize> {
+        let mut zts = String::from(msg);
+        zts += "\0";
+        self.write_string(&zts, enc)
+    }
+    
 }
