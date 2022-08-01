@@ -5,5 +5,6 @@ pub mod reverse;
 pub mod writer;
 pub use encoding;
 pub mod seek;
+pub mod prelude;
 
 mod tests;
