@@ -1,7 +1,9 @@
-pub mod byteorder;
-pub mod endianreader;
-pub mod macros;
-pub mod endianwriter;
-extern crate encoding;
-pub use encoding::*;
-pub use encoding::all::*;
+pub mod bytes;
+pub mod endian;
+pub mod reader;
+pub mod reverse;
+pub mod writer;
+pub use encoding;
+
+
+mod tests;

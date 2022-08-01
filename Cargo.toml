@@ -7,3 +7,12 @@ edition = "2021"
 
 [dependencies]
 encoding = "0.2"
+
+[features]
+i128 = []
+u128 = []
+int128 = ["i128", "u128"]
+isize = []
+usize = []
+intsize = ["isize", "usize"]
+all = ["intsize", "int128"]
