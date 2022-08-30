@@ -26,6 +26,12 @@ impl<W: SeekWrite> Seek for Writer<W> {
     }
 }
 
+impl<W: SeekWrite + Clone> Clone for Writer<W> {
+    fn clone(&self) -> Self {
+        Self::new(self.stream.clone(), self.endian.clone())
+    }
+}
+
 impl<W: SeekWrite> Writer<W> {
     pub fn new(stream: W, endian: Endian) -> Self {
         Self { stream, endian }

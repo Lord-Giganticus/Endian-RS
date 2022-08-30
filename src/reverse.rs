@@ -19,3 +19,13 @@ macro_rules! impl_reverse {
 }
 
 impl_reverse!(u8, i8, u16, i16, u32, i32, u64, i64);
+
+// Feature impls
+#[cfg(feature = "i128")]
+impl_reverse!(i128);
+#[cfg(feature = "u128")]
+impl_reverse!(u128);
+#[cfg(feature = "isize")]
+impl_reverse!(isize);
+#[cfg(feature = "usize")]
+impl_reverse!(usize);
