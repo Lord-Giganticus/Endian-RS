@@ -6,6 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+binread = { version = "2.2.0", optional = true }
+binwrite = { version = "0.2.1", optional = true }
 encoding = "0.2"
 
 [features]
@@ -15,4 +17,4 @@ int128 = ["i128", "u128"]
 isize = []
 usize = []
 intsize = ["isize", "usize"]
-all = ["intsize", "int128"]
+all = ["intsize", "int128", "binread", "binwrite"]

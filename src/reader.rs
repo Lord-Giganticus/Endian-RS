@@ -1,6 +1,8 @@
 use crate::{endian::*, bytes::*, encoding::{Encoding, DecoderTrap::Ignore}};
-
 use std::io::{Read, Seek};
+
+#[cfg(feature = "binread")]
+use binread::prelude::*;
 
 pub trait SeekRead : Read + Seek {}
 
@@ -42,6 +44,10 @@ impl<R: SeekRead> Reader<R> {
             num = num.reverse();
         }
         Ok(num)
+    }
+    #[cfg(feature = "binread")]
+    pub fn read_br_type<N: BinRead>(&mut self) -> BinResult<N> {
+        self.read_type(self.order.into())
     }
     pub fn read_string<E: Encoding>(&mut self, len: usize, enc: &E) -> std::io::Result<String>  {
         let mut vec = vec![0u8; len];

@@ -2,6 +2,9 @@ use crate::{endian::*, bytes::*, encoding::{Encoding, EncoderTrap::Ignore}};
 
 use std::io::{Write, Seek};
 
+#[cfg(feature = "binwrite")]
+use binwrite::{writer_option_new, BinWrite};
+
 pub trait SeekWrite: Write + Seek {}
 
 impl<T : Write + Seek> SeekWrite for T {}
@@ -43,6 +46,9 @@ impl<W: SeekWrite> Writer<W> {
         }
         self.write(&buf)
     }
+    pub fn write_bw_type<N: BinWrite>(&mut self, num: N) -> std::io::Result<()> {
+        num.write_options(self, &writer_option_new!(endian : self.endian.into()))
+    }
     pub fn write_string<E: Encoding>(&mut self, msg: &str, enc: &E) -> std::io::Result<usize> {
         let buf = enc.encode(msg.into(), Ignore).unwrap_or_default();
         self.write(&buf)
@@ -51,6 +57,5 @@ impl<W: SeekWrite> Writer<W> {
         let mut zts = String::from(msg);
         zts += "\0";
         self.write_string(&zts, enc)
-    }
-    
+    } 
 }
