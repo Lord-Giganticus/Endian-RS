@@ -15,9 +15,13 @@ pub trait SeekEnd: Seek {
 impl<S: Seek> SeekBegin for S {}
 impl<S: Seek> SeekEnd for S {}
 
-pub fn temp_seek<S: Seek, F: FnMut(&mut S) -> ()>(stream: &mut S, pos: SeekFrom, func: &mut F) {
-    let p = stream.seek(SeekFrom::Current(0)).unwrap_or_default();
-    stream.seek(pos).unwrap();
-    (func)(stream);
-    stream.seek(SeekFrom::Start(p)).unwrap();
+pub trait TempSeek: Seek {
+    fn temp_seek<F: FnOnce(&mut Self) -> ()>(&mut self, pos: SeekFrom, func: F) {
+        let p = self.seek(SeekFrom::Current(0)).unwrap_or_default();
+        self.seek(pos).unwrap();
+        func(self);
+        self.seek(SeekFrom::Start(p)).unwrap();
+    }
 }
+
+impl<S: Seek> TempSeek for S {}

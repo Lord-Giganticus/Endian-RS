@@ -46,6 +46,7 @@ impl<W: SeekWrite> Writer<W> {
         }
         self.write(&buf)
     }
+    #[cfg(feature = "binwrite")]
     pub fn write_bw_type<N: BinWrite>(&mut self, num: N) -> std::io::Result<()> {
         num.write_options(self, &writer_option_new!(endian : self.endian.into()))
     }
